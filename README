@@ -1,0 +1,61 @@
+this is an unofficial release of Cubit -- USE AT YOUR OWN RISK!
+-----------------------------------------------------------------------------
+
+Cubit -- A Cube Pruning Decoder of Phrase-based Translation
+
+described in Section 5.1 of:
+
+Liang Huang and David Huang (2007). 
+Forest Rescoring: Faster Decoding with Integrated Language Models.
+In Proceedings of ACL, Prague, Czech Rep.
+
+The related research was conducted at the University of Pennsylvania (Philadelphia, PA)
+and the Information Sciences Institute, University of Southern California (Marina del Rey, CA).
+
+Author: Liang Huang (lhuang3@cis.upenn.edu)
+
+If you used or referred to this software for the implementation of cube pruning I request your citing of the above paper.
+
+-----------------------------------------------------------------------------
+
+To run Cubit you need the following packages:
+
+1. Python >= 2.5
+2. SRILM, a C++ toolkit of language modeling.
+3. psrilm, a python port of SRILM by David Chiang (chiang@isi.edu)
+
+and a Pharaoh-style phrase-table.
+
+-----------------------------------------------------------------------------
+
+Main file: cubit.py
+
+decoder.py:
+	implements various decoding algorithms, which include:
+		1) a faithful clone of Pharaoh-style forward update beam-search with per-bin threshold beams. 
+			in function forward_search(lattice) 
+
+		2) the backward-star version of 1), which provides the backbone of cube pruning.
+			in function backward_search(lattice)
+
+		3) (online version) of cube pruning. the core implementation has only 20 lines of code.
+			in function online_cube(lattice)
+
+	The code for the above three decoders are short and meant to be easily accessible.
+
+	the search(lattice, ff=None) is the function which calls one of the above decoders. 
+		ff is the "forced-decoding" option [for advanced debugging].
+
+	also provides an important datastructure, class Bin, which is the collection of hypotheses 
+		covering a same number of (translated) foreign words. Field "id" is the bin id, 
+		e.g. bin #5 includes all hypotheses with 5 words translated. 
+		There is some histogram and threshold pruning built-in (both borrowed from Pharaoh).
+
+	
+----------------------------------------------------------------------
+
+questions/comments: email me at lhuang3@cis.upenn.edu.
+
+Thanks for your interest.
+
+----------------------------------------------------------------------
